@@ -2,19 +2,12 @@ const express =require('express')
 const hbs=require('hbs');
 const fs=require('fs');
 
+const port=process.env.PORT || 3000;
 var app=express();
 
+hbs.registerPartials(__dirname+'/views/partials')
 app.set('view engine','hbs')
 
-hbs.registerHelper('getyear',()=>new Date().getFullYear())
-hbs.registerHelper('CAPS',(text)=>text.toUpperCase())
-
-// app.use((req,res,next)=>{
-// 	res.render('maintenance.hbs')
-// })
-
-
-app.use(express.static(__dirname+'/public'))
 
 app.use((req,res,next)=>{
 	var time=new Date().toString();
@@ -23,6 +16,12 @@ app.use((req,res,next)=>{
 	console.log(log)
 	next();
 })
+
+app.use(express.static(__dirname+'/public'))
+
+hbs.registerHelper('getyear',()=>new Date().getFullYear()) 
+hbs.registerHelper('CAPS',(text)=>text.toUpperCase())
+
 
 app.get('/',(req,res)=>{
 	//res.send("<h1>Hello Express!<h1>")
@@ -40,4 +39,4 @@ app.get('/ab',(req,res)=>{
 	});
 });
 
-app.listen(1546,()=>console.log('Server is on'));
+app.listen(port,()=>console.log('Server is on'));
